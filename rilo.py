@@ -1,6 +1,5 @@
 import speech_recognition as sr
 import requests
-import json
 import os
 from dotenv import load_dotenv
 from elevenlabs.client import ElevenLabs
@@ -10,7 +9,6 @@ load_dotenv()
 
 MODEL_NAME = "rilo"
 OLLAMA_API_URL = "http://localhost:11434/api/generate"
-TEMP_AUDIO_FILE = "temp_rilo_speech.mp3"
 
 ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
 
@@ -35,12 +33,10 @@ def speak(text):
         stream(audio_stream)
     except Exception as e:
         print(f"Error communicating with ElevenLabs API: {e}")
-    finally:
-        if os.path.exists(TEMP_AUDIO_FILE):
-            os.remove(TEMP_AUDIO_FILE)
 
 def listen_for_command():
     recognizer = sr.Recognizer()
+
     with sr.Microphone() as source:
         print("\nListening...")
         recognizer.energy_threshold = 300 
